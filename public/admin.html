@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Placement Results</title>
+    <link rel="stylesheet" href="/styles.css">
+  </head>
+  <body>
+    <div class="app-shell admin-shell">
+      <header class="topbar">
+        <div class="brand-block">
+          <div class="brand-mark" aria-hidden="true">
+            <span>A1</span>
+            <span>C2</span>
+          </div>
+          <div>
+            <p class="eyebrow">Admin</p>
+            <h1>Результаты тестов</h1>
+          </div>
+        </div>
+        <a class="secondary-link" href="/">Открыть тест</a>
+      </header>
+
+      <main class="admin-layout">
+        <section class="results-list-panel">
+          <div class="admin-panel-head">
+            <div>
+              <p class="eyebrow">Attempts</p>
+              <h2>Попытки</h2>
+            </div>
+            <button class="secondary-button" id="refreshButton" type="button">Обновить</button>
+          </div>
+          <div class="results-list" id="resultsList">
+            <p class="empty-state">Загрузка результатов...</p>
+          </div>
+        </section>
+
+        <section class="result-detail-panel" id="detailPanel">
+          <p class="empty-state">Выберите попытку слева.</p>
+        </section>
+      </main>
+    </div>
+
+    <script src="/admin.js" type="module"></script>
+  </body>
+</html>

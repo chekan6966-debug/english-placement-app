@@ -1,0 +1,7 @@
+.DS_Store
+.env
+node_modules/
+data/results/*.json
+screenshots/
+english-placement-app.zip
+.github_upload_key*
