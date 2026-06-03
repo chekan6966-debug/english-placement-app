@@ -972,10 +972,6 @@ button:focus-visible {
               <input name="email" type="email" autocomplete="email" required placeholder="student@example.com">
             </label>
             <label>
-              Телефон
-              <input name="phone" type="tel" autocomplete="tel" placeholder="+7...">
-            </label>
-            <label>
               Цель обучения
               <select name="goal">
                 <option value="">Не указано</option>
@@ -1503,7 +1499,6 @@ function bindEvents() {
     state.student = {
       name: formData.get("name").trim(),
       email: formData.get("email").trim(),
-      phone: formData.get("phone").trim(),
       goal: formData.get("goal")
     };
     startTest();
@@ -1760,7 +1755,6 @@ async function sendResultEmail(record) {
         _captcha: "false",
         name: record.student.name,
         email: record.student.email,
-        phone: record.student.phone || "-",
         goal: record.student.goal || "-",
         submitted_at: record.submittedAt,
         level: `${record.result.level} - ${record.result.levelTitle}`,

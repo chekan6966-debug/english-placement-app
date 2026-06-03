@@ -79,7 +79,6 @@ function bindEvents() {
     state.student = {
       name: formData.get("name").trim(),
       email: formData.get("email").trim(),
-      phone: formData.get("phone").trim(),
       goal: formData.get("goal")
     };
     startTest();

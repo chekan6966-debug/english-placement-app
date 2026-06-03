@@ -93,7 +93,6 @@ async function handleResult(body, req, res) {
   const student = {
     name: String(body.student.name).trim(),
     email: String(body.student.email).trim(),
-    phone: String(body.student.phone || "").trim(),
     goal: String(body.student.goal || "").trim()
   };
 
@@ -461,7 +460,6 @@ function renderEmailHtml(record) {
   <body style="font-family: Arial, sans-serif; color: #1d2733; line-height: 1.45;">
     <h1>English Placement Result</h1>
     <p><strong>Student:</strong> ${escapeHtml(record.student.name)} (${escapeHtml(record.student.email)})</p>
-    <p><strong>Phone:</strong> ${escapeHtml(record.student.phone || "-")}</p>
     <p><strong>Goal:</strong> ${escapeHtml(record.student.goal || "-")}</p>
     <p><strong>Submitted:</strong> ${escapeHtml(record.submittedAt)}</p>
     <h2>Result: ${escapeHtml(record.result.level)} - ${escapeHtml(record.result.levelTitle)}</h2>
@@ -490,7 +488,6 @@ function renderEmailText(record) {
     "English Placement Result",
     "",
     `Student: ${record.student.name} (${record.student.email})`,
-    `Phone: ${record.student.phone || "-"}`,
     `Goal: ${record.student.goal || "-"}`,
     `Submitted: ${record.submittedAt}`,
     "",
