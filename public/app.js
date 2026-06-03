@@ -78,7 +78,6 @@ function bindEvents() {
     const formData = new FormData(els.studentForm);
     state.student = {
       name: formData.get("name").trim(),
-      email: formData.get("email").trim(),
       goal: formData.get("goal")
     };
     startTest();

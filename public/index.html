@@ -37,7 +37,7 @@
               <div class="level-bar is-c2">C2</div>
             </div>
             <h2>Тест для первичного определения уровня</h2>
-            <p>Грамматика, лексика, чтение и аудирование. После завершения результат сохраняется и отправляется преподавателю.</p>
+            <p>Грамматика, лексика, чтение и аудирование. Результат автоматически придет преподавателю на почту.</p>
             <div class="section-strip" id="sectionStrip"></div>
           </div>
 
@@ -45,10 +45,6 @@
             <label>
               Имя ученика
               <input name="name" type="text" autocomplete="name" required placeholder="Например, Анна Иванова">
-            </label>
-            <label>
-              Email ученика
-              <input name="email" type="email" autocomplete="email" required placeholder="student@example.com">
             </label>
             <label>
               Цель обучения
@@ -124,6 +120,7 @@
                 <strong id="emailStatus">...</strong>
               </div>
             </div>
+            <p class="result-screenshot-note">На всякий случай сделайте скриншот этого результата после завершения теста.</p>
           </div>
           <div class="breakdown-grid" id="breakdownGrid"></div>
           <button class="secondary-button" id="restartButton" type="button">Новый тест</button>

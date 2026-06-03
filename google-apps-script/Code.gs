@@ -31,8 +31,6 @@ function appendToSheet(record) {
     sheet.appendRow([
       "Submitted at",
       "Student",
-      "Email",
-      "Phone",
       "Goal",
       "Level",
       "Score %",
@@ -53,8 +51,6 @@ function appendToSheet(record) {
   sheet.appendRow([
     record.submittedAt,
     record.student.name || "",
-    record.student.email || "",
-    record.student.phone || "",
     record.student.goal || "",
     record.result.level || "",
     record.result.weightedPercent || 0,
@@ -102,8 +98,7 @@ function renderHtml(record) {
   return `
     <div style="font-family:Arial,sans-serif;color:#1d2733;line-height:1.45">
       <h1>English Placement Result</h1>
-      <p><strong>Student:</strong> ${escapeHtml(record.student.name)} (${escapeHtml(record.student.email)})</p>
-      <p><strong>Phone:</strong> ${escapeHtml(record.student.phone || "-")}</p>
+      <p><strong>Student:</strong> ${escapeHtml(record.student.name)}</p>
       <p><strong>Goal:</strong> ${escapeHtml(record.student.goal || "-")}</p>
       <p><strong>Submitted:</strong> ${escapeHtml(record.submittedAt)}</p>
       <h2>${escapeHtml(record.result.level)} - ${escapeHtml(record.result.levelTitle)}</h2>
@@ -133,8 +128,7 @@ function renderText(record) {
   return [
     "English Placement Result",
     "",
-    `Student: ${record.student.name} (${record.student.email})`,
-    `Phone: ${record.student.phone || "-"}`,
+    `Student: ${record.student.name}`,
     `Goal: ${record.student.goal || "-"}`,
     `Submitted: ${record.submittedAt}`,
     "",

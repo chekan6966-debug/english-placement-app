@@ -562,6 +562,13 @@ button:focus-visible {
   margin-top: 22px;
 }
 
+.result-screenshot-note {
+  margin: 18px 0 0;
+  color: var(--muted);
+  font-size: 15px;
+  line-height: 1.45;
+}
+
 .score-row div {
   min-width: 160px;
   padding: 14px;

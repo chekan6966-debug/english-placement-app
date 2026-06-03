@@ -92,7 +92,6 @@ async function handleResult(body, req, res) {
   const submittedAt = new Date().toISOString();
   const student = {
     name: String(body.student.name).trim(),
-    email: String(body.student.email).trim(),
     goal: String(body.student.goal || "").trim()
   };
 
@@ -141,9 +140,6 @@ function validateSubmission(body) {
   }
   if (!String(body.student.name || "").trim()) {
     return { ok: false, error: "Student name is required" };
-  }
-  if (!isEmail(String(body.student.email || ""))) {
-    return { ok: false, error: "Valid student email is required" };
   }
   if (!body.answers || typeof body.answers !== "object") {
     return { ok: false, error: "Answers are required" };
@@ -357,10 +353,6 @@ function sendBuffer(res, status, buffer, contentType) {
   res.end(buffer);
 }
 
-function isEmail(value) {
-  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.trim());
-}
-
 function createResultId(name, isoDate) {
   const safeName = name
     .toLowerCase()
@@ -381,9 +373,7 @@ async function sendResultEmail(record) {
 
   const message = { from, to: recipient, subject, html, text };
   const copyStudent = String(process.env.SEND_STUDENT_COPY || "").toLowerCase() === "true";
-  if (copyStudent && record.student.email) {
-    message.cc = record.student.email;
-  }
+  void copyStudent;
 
   try {
     if (process.env.SMTP_HOST) {
@@ -459,7 +449,7 @@ function renderEmailHtml(record) {
 <html>
   <body style="font-family: Arial, sans-serif; color: #1d2733; line-height: 1.45;">
     <h1>English Placement Result</h1>
-    <p><strong>Student:</strong> ${escapeHtml(record.student.name)} (${escapeHtml(record.student.email)})</p>
+    <p><strong>Student:</strong> ${escapeHtml(record.student.name)}</p>
     <p><strong>Goal:</strong> ${escapeHtml(record.student.goal || "-")}</p>
     <p><strong>Submitted:</strong> ${escapeHtml(record.submittedAt)}</p>
     <h2>Result: ${escapeHtml(record.result.level)} - ${escapeHtml(record.result.levelTitle)}</h2>
@@ -487,7 +477,7 @@ function renderEmailText(record) {
   return [
     "English Placement Result",
     "",
-    `Student: ${record.student.name} (${record.student.email})`,
+    `Student: ${record.student.name}`,
     `Goal: ${record.student.goal || "-"}`,
     `Submitted: ${record.submittedAt}`,
     "",
