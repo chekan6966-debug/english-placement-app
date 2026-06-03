@@ -117,7 +117,9 @@ async function handleResult(body, req, res) {
   await writeFile(resultPath, JSON.stringify(record, null, 2), "utf8");
 
   let email = { attempted: false, sent: false, message: "Email is not configured" };
-  if (process.env.RESULT_RECIPIENT_EMAIL) {
+  if (process.env.RESULT_WEBHOOK_URL) {
+    email = await sendViaResultWebhook(record);
+  } else if (process.env.RESULT_RECIPIENT_EMAIL) {
     email = await sendResultEmail(record);
   }
 
@@ -399,6 +401,48 @@ async function sendResultEmail(record) {
   } catch (error) {
     console.error("Email delivery failed:", error);
     return { attempted: true, sent: false, message: error.message || "Email delivery failed" };
+  }
+}
+
+async function sendViaResultWebhook(record) {
+  try {
+    const response = await fetch(process.env.RESULT_WEBHOOK_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        secret: process.env.RESULT_WEBHOOK_SECRET || "",
+        record
+      })
+    });
+
+    const text = await response.text();
+    let payload = {};
+    try {
+      payload = text ? JSON.parse(text) : {};
+    } catch {
+      payload = { message: text };
+    }
+
+    if (!response.ok || payload.ok === false) {
+      throw new Error(payload.error || payload.message || `Webhook returned ${response.status}`);
+    }
+
+    return {
+      attempted: true,
+      sent: true,
+      transport: "webhook",
+      message: payload.message || "Result webhook accepted"
+    };
+  } catch (error) {
+    console.error("Result webhook failed:", error);
+    return {
+      attempted: true,
+      sent: false,
+      transport: "webhook",
+      message: error.message || "Result webhook failed"
+    };
   }
 }
 

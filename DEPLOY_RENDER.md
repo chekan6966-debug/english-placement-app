@@ -1,6 +1,6 @@
 # Deploy to Render
 
-Это приложение лучше размещать как Node.js Web Service, а не как static site: сервер считает результаты, сохраняет попытки и отдает админку.
+Это приложение можно разместить как бесплатный Node.js Web Service, но у бесплатного Render есть важные ограничения.
 
 ## Перед деплоем
 
@@ -20,15 +20,45 @@ Render попросит значения для переменных с `sync: f
 ADMIN_PASSWORD=любой-надежный-пароль-для-админки
 ```
 
+Чтобы результаты приходили на почту в бесплатном варианте, также задайте:
+
+```text
+RESULT_WEBHOOK_URL=https://script.google.com/macros/s/ваш-id/exec
+RESULT_WEBHOOK_SECRET=тот-же-секрет-что-в-Google-Apps-Script
+```
+
 После деплоя:
 
 - ссылка для учеников будет вида `https://english-placement-app.onrender.com`
 - админка будет `https://english-placement-app.onrender.com/admin`
 - в админке нужно ввести `ADMIN_PASSWORD`
 
-## Почта
+## Почта: бесплатный вариант
 
-Если нужно получать результаты на почту, добавьте:
+На Render Free обычный SMTP не подходит: бесплатные web services не могут отправлять исходящий трафик на SMTP-порты `25`, `465` и `587`.
+
+Используйте Google Apps Script:
+
+1. Создайте Google Sheet.
+2. Откройте `Extensions` -> `Apps Script`.
+3. Вставьте код из `google-apps-script/Code.gs`.
+4. В начале файла замените:
+
+```js
+const RECIPIENT_EMAIL = "your-email@example.com";
+const WEBHOOK_SECRET = "change-this-secret";
+```
+
+5. Нажмите `Deploy` -> `New deployment`.
+6. Type: `Web app`.
+7. Execute as: `Me`.
+8. Who has access: `Anyone`.
+9. Скопируйте Web app URL в `RESULT_WEBHOOK_URL`.
+10. Значение `WEBHOOK_SECRET` вставьте в Render как `RESULT_WEBHOOK_SECRET`.
+
+## Почта: SMTP вариант
+
+Если приложение размещается не на Render Free, можно использовать SMTP:
 
 ```text
 RESULT_RECIPIENT_EMAIL=your-email@example.com
@@ -40,15 +70,13 @@ SMTP_USER=your-email@example.com
 SMTP_PASS=your-app-password
 ```
 
-## Важно про хранение результатов
+## Важно про бесплатный Render
 
-`render.yaml` использует persistent disk:
+В бесплатном варианте `render.yaml` использует `plan: free` и не подключает persistent disk.
 
-```yaml
-disk:
-  name: placement-results
-  mountPath: /opt/render/project/src/storage
-  sizeGB: 1
-```
+Это значит:
 
-Это нужно, чтобы результаты не исчезали после перезапуска сервера. Без persistent disk многие хостинги стирают локальные файлы при redeploy/restart.
+- сайт получает постоянную публичную ссылку;
+- сервис может засыпать после простоя, первый запуск может занять около минуты;
+- результаты, сохраненные в локальные JSON-файлы, могут пропасть после перезапуска/редеплоя/сна сервиса;
+- для надежного бесплатного хранения результатов лучше подключить Google Sheets / Apps Script или другой бесплатный внешний приемник.

@@ -22,6 +22,14 @@ http://localhost:3000
 
 Если SMTP не настроен, результаты не потеряются: сервер сохранит JSON-файлы в `data/results/`.
 
+Для бесплатного хостинга на Render лучше использовать Google Apps Script webhook вместо SMTP:
+
+1. Создайте Google Sheet.
+2. Откройте `Extensions` -> `Apps Script`.
+3. Вставьте код из `google-apps-script/Code.gs`.
+4. Разверните как Web app.
+5. Укажите URL в `RESULT_WEBHOOK_URL`.
+
 ## Что внутри
 
 - 36 вопросов уровня A1-C2.
